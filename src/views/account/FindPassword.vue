@@ -42,7 +42,7 @@ export default {
       this.form.validateFields((err, values) => {
         if (!err) {
           this.loading = true;
-          this.$axios.get(`/login/findPassword?userId=${values.userId}&role=${values.selectedRole}`).then(res => {
+          this.$axios.get(`/findPassword/sendEmail?userId=${values.userId}&role=${values.selectedRole}`).then(res => {
             if (res.state === true) {
               this.loading = false;
               console.log(res.email);

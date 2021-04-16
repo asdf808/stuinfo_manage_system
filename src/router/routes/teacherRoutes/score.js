@@ -7,15 +7,20 @@ export default {
   },
   component: PageView,
   children: [
-    // {
-    //   path: 'inputScore',
-    //   name: '成绩信息上传',
-    //   component: () => import('@/views/score/InputScore.vue')
-    // },
+    {
+      path: 'inputScore',
+      name: '成绩信息上传',
+      component: () => import('@/views/score/InputScore.vue')
+    },
     {
       path: 'scoreList',
       name: '成绩信息',
       component: () => import('@/views/score/ScoreList.vue')
+    },
+    {
+      path: 'scoreAnalyze',
+      name: '成绩分析',
+      component: () => import('@/views/score/ScoreAnalyze.vue')
     }
   ]
 };

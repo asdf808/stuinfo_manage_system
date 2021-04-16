@@ -47,7 +47,7 @@ async function loginGuard(to, from, next) {
       let route = to.matched[1];
       // console.log(route.meta.auth, role);
       if (to.path === '/') {
-        next({ path: '/' + role });
+        next({ path: '/' + role.toLowerCase() });
       }
       if (typeof route === 'undefined' || typeof route.meta === 'undefined' || typeof route.meta.auth === 'undefined' || route.meta.auth === role) {
         next();

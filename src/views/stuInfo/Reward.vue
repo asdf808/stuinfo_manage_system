@@ -1,10 +1,10 @@
 <template>
   <div>
-    <stu-info-display-for-student v-if="$store.state.account.role === 'student'" :columns="columns" :dataSource="dataSource" @edit="edit" @add="add"></stu-info-display-for-student>
+    <stu-info-display-for-student v-if="$store.state.account.role === 'STUDENT'" :columns="columns" :dataSource="dataSource" @edit="edit" @add="add"></stu-info-display-for-student>
     <stu-info-display v-else :columns="columns" :dataSource="dataSource" @edit="edit" @add="add"></stu-info-display>
     <a-modal :visible="visible" :confirm-loading="confirmLoading" @ok="handleOk" @cancel="visible = false">
       <a-form :form="form">
-        <a-form-item label="学号" v-if="$store.state.account.role !== 'student'">
+        <a-form-item label="学号" v-if="$store.state.account.role !== 'STUDENT'">
           <a-input v-decorator="['stuId', { rules: [{ required: true, message: '学号不能为空' }] }]" />
         </a-form-item>
         <a-form-item label="奖励名称">

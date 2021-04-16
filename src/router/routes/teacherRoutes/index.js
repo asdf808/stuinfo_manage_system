@@ -4,7 +4,7 @@ import personal from './personal';
 export default {
   path: 'teacher',
   meta: {
-    auth: 'teacher'
+    auth: 'TEACHER'
   },
   component: () => import('@/layouts/BlankView.vue'),
   children: [stuInfo, score, personal]

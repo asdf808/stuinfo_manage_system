@@ -54,7 +54,7 @@ export default {
         if (!err) {
           this.loading = true;
           if (values.password === values.password2) {
-            this.$axios.post('/login/resetPassword', values).then(res => {
+            this.$axios.post('/findPassword/resetPassword', values).then(res => {
               if (res.state === true) {
                 this.loading = false;
                 this.$message.success('密码重置成功！');

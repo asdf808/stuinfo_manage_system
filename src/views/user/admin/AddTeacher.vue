@@ -31,7 +31,7 @@ export default {
     };
   },
   created() {
-    this.$axios.get('/getAllClasses').then(res => {
+    this.$axios.get('/class/getAllClasses').then(res => {
       if (res.state) {
         this.selectItems = res.data;
       }

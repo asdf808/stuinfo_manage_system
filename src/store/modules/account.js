@@ -6,6 +6,7 @@ export default {
   state: {
     user: null,
     permissions: null,
+    username: null,
     role: null,
     menuData: []
   },
@@ -45,12 +46,6 @@ export default {
         }
       }
       return state.role;
-    },
-    username: state => {
-      if (state.user) {
-        return state.user.stuName || state.user.teacherName || state.user.adminName;
-      }
-      return null;
     }
   },
   mutations: {
@@ -61,6 +56,9 @@ export default {
     setPermissions(state, permissions) {
       state.permissions = permissions;
       localStorage.setItem(process.env.VUE_APP_PERMISSIONS_KEY, JSON.stringify(permissions));
+    },
+    setUsername(state, username) {
+      state.username = username;
     },
     setRole(state, role) {
       state.role = role;
@@ -86,8 +84,9 @@ export default {
       const res = await axios.get('/user/getUser');
       console.log(res);
       if (res.state === true) {
-        commit('setUser', res.user);
+        commit('setUsername', res.username);
         commit('setRole', res.role);
+        commit('setUser', res.user);
         return true;
       }
       return false;

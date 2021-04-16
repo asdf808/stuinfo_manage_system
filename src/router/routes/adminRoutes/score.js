@@ -16,6 +16,11 @@ export default {
       path: 'scoreList',
       name: '成绩信息',
       component: () => import('@/views/score/ScoreList.vue')
+    },
+    {
+      path: 'scoreAnalyze',
+      name: '成绩分析',
+      component: () => import('@/views/score/ScoreAnalyze4Admin.vue')
     }
   ]
 };

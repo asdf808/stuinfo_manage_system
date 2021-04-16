@@ -1,7 +1,7 @@
 import PageView from '@/layouts/PageView';
 export default {
   path: 'stuInfo',
-  name: '个人信息',
+  name: '学生信息',
   meta: {
     icon: 'solution'
   },

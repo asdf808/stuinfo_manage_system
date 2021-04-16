@@ -4,10 +4,10 @@
       <span>学年：</span>
       <a-select default-value="全部" v-model="selectedStudyYear" class="select">
         <a-select-option :value="0">全部</a-select-option>
-        <a-select-option :value="1">第一学年</a-select-option>
-        <a-select-option :value="2">第二学年</a-select-option>
-        <a-select-option :value="3">第三学年</a-select-option>
-        <a-select-option :value="4">第四学年</a-select-option>
+        <a-select-option :value="1">第1学年</a-select-option>
+        <a-select-option :value="2">第2学年</a-select-option>
+        <a-select-option :value="3">第3学年</a-select-option>
+        <a-select-option :value="4">第4学年</a-select-option>
       </a-select>
       <span>学期：</span>
       <a-select default-value="全部" v-model="selectedSemester" class="select">
@@ -22,7 +22,40 @@
       </a-select>
       <download-excel-component :xls_fields="xls_fields" :excelData="currentScoreData" :fileName="$route.name" style="display: inline-block; margin-left: 20px"></download-excel-component>
     </div>
-    <a-table :columns="columns" :data-source="currentScoreData" bordered :pagination="paginationOpt" :rowKey="record => record.id"></a-table>
+    <a-table :columns="columns" :data-source="currentScoreData" bordered :pagination="paginationOpt" :rowKey="record => record.id">
+      <template slot="semester" slot-scope="text, record">
+        <span
+          >第<b>{{ record.studyYear }}</b
+          >学年 第<b>{{ record.semester }}</b
+          >学期</span
+        >
+      </template>
+      <template slot="score" slot-scope="text, record">
+        <div>
+          <a-input v-if="record.editable" style="width: 100px" :defaultValue="text" @change="e => handleChange('score', e)" />
+          <template v-else>
+            {{ text }}
+          </template>
+        </div>
+      </template>
+      <template slot="operation" slot-scope="text, record">
+        <div class="editable-row-operations">
+          <span v-if="record.editable">
+            <a @click="() => save(record.id)">保存</a>
+            <a-popconfirm title="Sure to cancel?" @confirm="() => cancel(record.id)">
+              <a>取消</a>
+            </a-popconfirm>
+          </span>
+          <span v-else>
+            <a :disabled="editingKey !== ''" @click="() => edit(record.id)">编辑</a>
+            <span style="display: inline-block; width: 10%"></span>
+            <a-popconfirm title="确认删除?" @confirm="() => remove(record.id)">
+              <a :disabled="editingKey !== ''">删除</a>
+            </a-popconfirm>
+          </span>
+        </div>
+      </template>
+    </a-table>
   </div>
 </template>
 
@@ -49,19 +82,34 @@ const paginationOpt = {
 const columns = [
   {
     title: '学号',
-    dataIndex: 'stuId'
+    dataIndex: 'stuId',
+    width: '15%'
   },
   {
     title: '姓名',
-    dataIndex: 'stuName'
+    dataIndex: 'stuName',
+    width: '15%'
   },
   {
     title: '课程名称',
-    dataIndex: 'courseName'
+    dataIndex: 'courseName',
+    width: '20%'
+  },
+  {
+    title: '学年学期',
+    scopedSlots: { customRender: 'semester' },
+    width: '20%'
   },
   {
     title: '分数',
-    dataIndex: 'score'
+    dataIndex: 'score',
+    sorter: (a, b) => a.score - b.score,
+    scopedSlots: { customRender: 'score' },
+    width: '15%'
+  },
+  {
+    title: '操作',
+    scopedSlots: { customRender: 'operation' }
   }
 ];
 columns.forEach(column => {
@@ -80,6 +128,8 @@ export default {
       selectedStudyYear: 0,
       selectedSemester: 0,
       selectedCourse: 0,
+      editingKey: '',
+      cacheData: null,
       xls_fields: { stuId: '学号', stuName: '姓名', courseName: '课程名称', score: '分数' }
     };
   },
@@ -117,6 +167,54 @@ export default {
         return flag;
       });
     }
+  },
+  methods: {
+    handleChange(col, e){
+      this.cacheData[col] = e.target.value;
+    },
+    edit(key) {
+      const newData = [...this.scoreData];
+      const target = newData.find(item => key === item.id);
+      this.editingKey = '1';
+      target.editable = true;
+      this.scoreData = newData;
+      this.cacheData = { ...target };
+    },
+    cancel(key) {
+      const newData = [...this.scoreData];
+      const target = newData.find(item => key === item.id);
+      this.editingKey = '';
+      target.editable = false;
+      this.scoreData = newData;
+    },
+    remove(id) {
+      this.$axios.delete('/score/remove/' + id).then(res => {
+        if (res.state) {
+          this.scoreData = this.scoreData.filter(item => item.id !== id);
+          this.$message.success('删除成功');
+        } else {
+          this.$message.error('删除失败！');
+        }
+      });
+    },
+    save(key){
+      console.log(this.cacheData);
+      const param = { id: this.cacheData.id, score: this.cacheData.score };
+      this.$axios.put('/score/update', param).then(res => {
+        if (res.state) {
+          const newData = [...this.scoreData];
+          const target = newData.find(item => key === item.id);
+          for(let key in this.cacheData){
+            target[key] = this.cacheData[key];
+          }
+          target.editable = false;
+          this.editingKey = '';
+          this.scoreData = newData;
+        } else {
+          this.$message.error('修改失败！');
+        }
+      })
+    }
   }
 };
 </script>
@@ -127,5 +225,8 @@ export default {
     width: 120px;
     margin-right: 20px;
   }
+}
+.editable-row-operations a {
+  margin-right: 8px;
 }
 </style>

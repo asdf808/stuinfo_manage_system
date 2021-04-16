@@ -33,6 +33,7 @@
 
 <script>
 import UpdateAvatar from '../UpdateAvatar';
+import { mapState, mapMutations } from 'vuex';
 export default {
   components: {
     UpdateAvatar
@@ -42,6 +43,9 @@ export default {
       personalData: {},
       form: this.$form.createForm(this)
     };
+  },
+  computed: {
+    ...mapState('account', ['user'])
   },
   created() {
     this.$axios.get('/user/getUser').then(res => {
@@ -55,6 +59,7 @@ export default {
     });
   },
   methods: {
+    ...mapMutations('account', ['setUsername', 'setUserItem']),
     onSubmit(e) {
       e.preventDefault();
       this.form.validateFields((err, values) => {
@@ -67,6 +72,10 @@ export default {
               const res = await this.$axios.put('/user/updateStudent', values);
               if (res.state === true) {
                 this.$message.success('修改成功！');
+                this.setUsername(values.adminName);
+                for (let key in values) {
+                  this.setUserItem({ key, value: values[key] });
+                }
               } else {
                 this.$message.error('修改失败！');
               }

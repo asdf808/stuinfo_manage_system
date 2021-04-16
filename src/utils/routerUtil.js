@@ -22,7 +22,7 @@ export function createMenu(role){
   }).children;
   let menuData = create(currentRoutes);
   menuData.forEach(route => {
-    route.path = role + '/' + route.path;
+    route.path = role.toLowerCase() + '/' + route.path;
   })
   return menuData;
 }

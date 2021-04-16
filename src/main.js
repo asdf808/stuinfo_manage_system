@@ -8,11 +8,9 @@ import antdvComponent from './utils/antdv-component';
 import init from './init';
 import VueJsonExcel from 'vue-json-excel';
 Vue.use(antdvComponent);
-Vue.component('downloadExcel', VueJsonExcel)
+Vue.component('downloadExcel', VueJsonExcel);
 
 Vue.config.productionTip = false;
-
-
 
 Vue.prototype.$axios = axios;
 

@@ -16,7 +16,11 @@
         <a-select-option :value="2">第2学期</a-select-option>
       </a-select>
     </div>
-    <a-table :columns="columns" :data-source="currentScoreData" bordered :pagination="paginationOpt" :rowKey="record => record.id"></a-table>
+    <a-table :columns="columns" :data-source="currentScoreData" bordered :pagination="paginationOpt" :rowKey="record => record.id">
+      <template slot="semester" slot-scope="text, record">
+        <span>第<b>{{ record.studyYear }}</b>学年 第<b>{{ record.semester }}</b>学期</span>
+      </template>
+    </a-table>
   </div>
 </template>
 
@@ -53,8 +57,13 @@ const columns = [
     dataIndex: 'courseName'
   },
   {
+    title: '学年学期',
+    scopedSlots: { customRender: 'semester' }
+  },
+  {
     title: '分数',
-    dataIndex: 'score'
+    dataIndex: 'score',
+    sorter: (a, b) => a.score - b.score
   }
 ];
 columns.forEach(column => {

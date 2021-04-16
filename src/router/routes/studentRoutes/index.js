@@ -3,7 +3,7 @@ import personal from './personal';
 export default {
   path: 'student',
   meta: {
-    auth: 'student'
+    auth: 'STUDENT'
   },
   component: () => import('@/layouts/PageView'),
   // component: () => import('@/layouts/BlankView.vue'),

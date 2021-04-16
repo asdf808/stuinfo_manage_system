@@ -25,9 +25,11 @@
         <a v-if="record.certificate" :href="imgUrl + record.certificate" target="_blank">
           <img :src="imgUrl + record.certificate" alt="" style="height: 40px; display: block; margin: 0 auto" />
         </a>
+        <span v-else>无</span>
       </template>
       <template slot="electronicEditionLink" slot-scope="text, record">
         <a v-if="record.electronicEdition" :href="imgUrl + record.electronicEdition" target="_blank"> 查看 </a>
+        <span v-else>无</span>
       </template>
     </a-table>
 
@@ -47,9 +49,11 @@
         <a v-if="record.certificate" :href="imgUrl + record.certificate" target="_blank">
           <img :src="imgUrl + record.certificate" alt="" style="height: 40px; display: block; margin: 0 auto" />
         </a>
+        <span v-else>无</span>
       </template>
       <template slot="electronicEditionLink" slot-scope="text, record">
         <a v-if="record.electronicEdition" :href="imgUrl + record.electronicEdition" target="_blank"> 查看 </a>
+        <span v-else>无</span>
       </template>
     </a-table>
   </div>

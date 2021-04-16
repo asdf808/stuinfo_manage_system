@@ -112,13 +112,6 @@
           <a-button :loading="loading" style="width: 100%; margin-top: 24px" size="large" htmlType="submit" type="primary">登录</a-button>
         </a-form-item>
       </a-form>
-      <!-- <a-modal title="选择您要登录的身份" :visible="modalVisible" :confirm-loading="confirmLoading" @ok="handleSelect" @cancel="handleCancel">
-        <a-radio-group name="radioGroup" v-model="selectedRole">
-          <a-radio v-for="(role, index) in roles" :key="index" :value="role">
-            {{ role }}
-          </a-radio>
-        </a-radio-group>
-      </a-modal> -->
     </div>
   </common-layout>
 </template>
@@ -148,7 +141,7 @@ export default {
   },
   computed: {},
   methods: {
-    ...mapMutations('account', ['setUser', 'setRole']),
+    ...mapMutations('account', ['setUsername', 'setRole']),
     onSubmit(e) {
       e.preventDefault();
       this.form.validateFields(err => {
@@ -162,28 +155,34 @@ export default {
       const userId = this.form.getFieldValue('userId');
       const password = this.form.getFieldValue('password');
       console.log(userId, password, this.remember, this.userType);
+      let loginRole;
       if (this.userType == 0) {
-        this.$axios.post('/login/studentLogin', { userId, password }).then(this.afterLogin);
+        loginRole = 0;
       } else {
         if (this.isAdmin) {
-          this.$axios.post('/login/adminLogin', { userId, password }).then(this.afterLogin);
+          loginRole = 2;
         } else {
-          this.$axios.post('/login/teacherLogin', { userId, password }).then(this.afterLogin);
+          loginRole = 1;
         }
       }
+      this.$axios.post('/auth/login', { userId, password, loginRole }).then(this.afterLogin, () => {
+        this.loading = this.confirmLoading = false;
+        this.$message.error('error');
+      });
     },
     afterLogin(loginRes) {
       console.log(loginRes);
       this.loading = this.confirmLoading = false;
       if (loginRes.state === true) {
-        this.setUser(loginRes.user);
-        this.setRole(loginRes.role);
+        const { username, role } = loginRes.user;
+        this.setUsername(username);
+        this.setRole(role);
         if (this.remember) {
           localStorage.setItem('token', loginRes.token);
         } else {
           sessionStorage.setItem('token', loginRes.token);
         }
-        this.$router.push('/' + loginRes.role);
+        this.$router.push('/' + role.toLowerCase());
         this.$message.success('登录成功', 3);
       } else {
         this.error = loginRes.msg;

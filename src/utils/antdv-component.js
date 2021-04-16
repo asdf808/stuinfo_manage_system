@@ -2,6 +2,8 @@ import {
   Button,
   Menu,
   Layout,
+  Row,
+  Col,
   Icon,
   Breadcrumb,
   Form,
@@ -22,13 +24,16 @@ import {
   Spin,
   Tag,
   Divider,
-  Tooltip
+  Tooltip,
+  InputNumber
 } from 'ant-design-vue';
 export default {
   install(Vue) {
     Vue.use(Button);
     Vue.use(Menu);
     Vue.use(Layout);
+    Vue.use(Row);
+    Vue.use(Col);
     Vue.use(Icon);
     Vue.use(Tabs);
     Vue.use(Input);
@@ -49,6 +54,7 @@ export default {
     Vue.use(Tag);
     Vue.use(Divider);
     Vue.use(Tooltip);
+    Vue.use(InputNumber);
     Vue.prototype.$message = message;
     Vue.prototype.$confirm = Modal.confirm;
   }

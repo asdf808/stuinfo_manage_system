@@ -2,7 +2,7 @@
   <a-dropdown>
     <div class="header-avatar" style="cursor: pointer; padding-right: 50px">
       <a-avatar class="avatar" size="small" shape="circle" style="width: 38px; height: 38px" :src="avatarSrc" />
-      <span class="name" v-if="user">{{ user.stuName || user.teacherName || user.adminName }}</span>
+      <span class="name">{{ username }}</span>
     </div>
     <a-menu :class="['avatar-menu']" slot="overlay">
       <a-menu-item>
@@ -24,7 +24,7 @@ import { SERVER_STATIC_BASE_URL } from '@/config';
 export default {
   name: 'HeaderAvatar',
   computed: {
-    ...mapState('account', ['user']),
+    ...mapState('account', ['user', 'username']),
     avatarSrc() {
       if (this.user && this.user.avatar) {
         return SERVER_STATIC_BASE_URL + this.user.avatar;

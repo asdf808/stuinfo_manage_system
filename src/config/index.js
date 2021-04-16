@@ -1,4 +1,4 @@
-export const systemName = '信息服务管理系统';
+export const systemName = '学生信息管理系统';
 export const SESSION_KEY = 'JSESSIONID';
 export const VUE_APP_USER_KEY = 'user';
 export const VUE_APP_ROLE_KEY = 'role';

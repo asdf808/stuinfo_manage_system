@@ -61,7 +61,7 @@ export default {
     };
   },
   created(){
-    this.$axios.get('/score/getAllCourse').then(res => {
+    this.$axios.get('/course/getAll').then(res => {
       if(res.state){
         this.selectItems = res.data;
       }
@@ -123,7 +123,7 @@ export default {
             } else {
               this.$message.error('添加失败');
             }
-            this.loading = true;
+            this.loading = false;
           })
         }
       });

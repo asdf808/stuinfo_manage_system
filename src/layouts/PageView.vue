@@ -4,7 +4,7 @@
       <img :src="extraImage" />
     </div> -->
     <router-view ref="page" />
-    <h2 v-if="this.$route.matched.length === 2">欢迎您，{{ this.$store.getters['account/username'] }}</h2>
+    <h2 v-if="this.$route.matched.length === 2">欢迎您，{{ this.$store.state.account.username }}</h2>
   </page-layout>
 </template>
 

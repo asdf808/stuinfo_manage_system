@@ -21,7 +21,7 @@ export default {
     };
   },
   computed: {
-    ...mapState('account', ['user', 'role']),
+    ...mapState('account', ['user']),
     avatarSrc() {
       if (this.user && this.user.avatar) {
         return SERVER_STATIC_BASE_URL + this.user.avatar;
@@ -31,7 +31,7 @@ export default {
     }
   },
   methods: {
-    ...mapMutations('account', ['setUser', 'setUserItem']),
+    ...mapMutations('account', ['setUserItem']),
     uploadAvatar(e) {
       const file = e.target.files[0];
       if (file) {
