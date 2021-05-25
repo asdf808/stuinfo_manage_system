@@ -11,9 +11,9 @@
         </a-form-item>
         <a-form-item>
           <a-radio-group v-decorator="['selectedRole', { rules: [{ required: true, message: '请选择用户类型' }] }]">
-            <a-radio value="student"> 学生 </a-radio>
-            <a-radio value="teacher"> 教师 </a-radio>
-            <a-radio value="admin"> 管理员 </a-radio>
+            <a-radio value="STUDENT"> 学生 </a-radio>
+            <a-radio value="TEACHER"> 教师 </a-radio>
+            <a-radio value="ADMIN"> 管理员 </a-radio>
           </a-radio-group>
         </a-form-item>
         <a-form-item>

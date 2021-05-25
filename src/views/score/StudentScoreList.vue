@@ -80,7 +80,6 @@ export default {
     };
   },
   created() {
-    console.log(1111111);
     this.$axios.get('/score/getList').then(res => {
       if (res.state === true) {
         console.log(res.data);

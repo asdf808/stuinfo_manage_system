@@ -56,6 +56,7 @@ export default {
     });
   },
   mounted() {
+
     this.histogram = new Histogram('histogramChart', {
       data: [],
       binField: 'score',

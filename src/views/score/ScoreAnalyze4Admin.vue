@@ -1,10 +1,12 @@
 <template>
   <div>
     <div>
-      <h3>各班平均分统计</h3>
+      <h2>各班平均分统计</h2>
       <div id="avgScore"></div>
-      <h3 style="margin-top: 20px">各班不及格人数统计</h3>
-      <div id="unpassedNum"></div>
+      <h2 style="margin-top: 20px">各班不及格人数统计</h2>
+      <div id="passedStackedColumnPlot"></div>
+      <h2 style="margin-top: 20px">各班及格率统计</h2>
+      <div id="passedRatio"></div>
     </div>
   </div>
 </template>
@@ -19,7 +21,7 @@ export default {
       baseData: [],
       avgScoreData: [],
       avgScoreColumnPlot: null,
-      unpassedNumColumnPlot: null
+      passedStackedColumnPlot: null
     };
   },
   created() {
@@ -47,26 +49,32 @@ export default {
   watch: {
     baseData(data) {
       let avgScoreData = [];
-      let unpassedData = [];
+      let passedData = [];
+      let passedRatio = [];
       for (const key in data) {
         let sum = 0;
         let unpassedNum = 0;
+        let passedNum = 0;
         data[key].forEach(score => {
           sum += score;
           if (score < 60) {
             unpassedNum++;
+          } else {
+            passedNum++;
           }
         });
         let avgScore = Number((sum / data[key].length).toFixed(2));
         let ratio = Number(((unpassedNum * 100) / data[key].length).toFixed(2));
         avgScoreData.push({ class: key + '班', avgScore });
-        unpassedData.push({ class: key + '班', num: unpassedNum, ratio });
+        passedData.push({ class: key + '班', num: unpassedNum, type: '未及格人数' });
+        passedData.push({ class: key + '班', num: passedNum, type: '及格人数' });
+        passedRatio.push({ class: key + '班', ratio });
       }
       this.avgScoreData = avgScoreData;
       console.log(avgScoreData);
-      console.log(unpassedData);
-      this.avgScoreColumnPlot.changeData(avgScoreData)
-      this.unpassedNumColumnPlot.changeData(unpassedData);
+      this.avgScoreColumnPlot.changeData(avgScoreData);
+      this.passedStackedColumnPlot.changeData(passedData);
+      this.passedRatio.changeData(passedRatio);
     }
   },
   mounted() {
@@ -82,27 +90,49 @@ export default {
         })
       }
     });
-    this.unpassedNumColumnPlot = new Column('unpassedNum', {
+    this.passedStackedColumnPlot = new Column('passedStackedColumnPlot', {
       data: [],
+      isStack: true,
       xField: 'class',
       yField: 'num',
-      color: '#ee4d4d',
+      seriesField: 'type',
       maxColumnWidth: 50,
-      meta: {
-        num: {
-          min: 0,
-          tickInterval: 1
-        }
-      },
+      // meta: {
+      //   num: {
+      //     min: 0,
+      //     tickInterval: 3
+      //   }
+      // },
       tooltip: {
         formatter: data => ({
           name: '不及格人数',
           value: data.num
         })
+      }
+    });
+    this.passedRatio = new Column('passedRatio', {
+      data: [],
+      xField: 'class',
+      yField: 'ratio',
+      color: '#ee4d4d',
+      maxColumnWidth: 50,
+      meta: {
+        ratio: {
+          min: 0,
+          max: 100,
+          tickInterval: 10
+        }
       },
+      tooltip: {
+        formatter: data => ({
+          name: '及格率',
+          value: data.ratio + '%'
+        })
+      }
     });
     this.avgScoreColumnPlot.render();
-    this.unpassedNumColumnPlot.render();
+    this.passedStackedColumnPlot.render();
+    this.passedRatio.render();
   }
 };
 </script>

@@ -29,7 +29,7 @@
       </a-select>
       <download-excel-component :xls_fields="xls_fields" :excelData="currentScoreData" :fileName="$route.name" style="display: inline-block; margin-left: 20px"></download-excel-component>
     </div>
-    <a-table :columns="columns" :data-source="currentScoreData" bordered :pagination="paginationOpt" :rowKey="record => record.id" @change="handleTableChange">
+    <a-table v-if="showTable" :columns="columns" :data-source="currentScoreData" bordered :pagination="paginationOpt" :rowKey="record => record.id">
       <template slot="semester" slot-scope="text, record">
         <span
           >第<b>{{ record.studyYear }}</b
@@ -129,7 +129,6 @@ export default {
   },
   data() {
     return {
-      showTable: true,
       paginationOpt,
       columns,
       scoreData: [],
@@ -169,13 +168,6 @@ export default {
       });
     }
   },
-  watch: {
-    currentScoreData(){
-      const paginationOpt = { ...this.paginationOpt };
-      paginationOpt.total = this.currentScoreData.length;
-      this.paginationOpt = paginationOpt;
-    }
-  },
   computed: {
     ...mapState('account', ['role']),
     currentScoreData() {
@@ -200,9 +192,6 @@ export default {
   methods: {
     handleChange(col, e){
       this.cacheData[col] = e.target.value;
-    },
-    handleTableChange(pagination){
-      console.log(pagination);
     },
     edit(key) {
       const newData = [...this.scoreData];

@@ -104,8 +104,8 @@ export default {
         this.$message.error('请选择图片文件');
         return false;
       }
-      if (!file.size > 2 * 1024 * 1024) {
-        this.$message.error('图片大小不能超过2MB！');
+      if (file.size > 1024 * 1024) {
+        this.$message.error('图片大小不能超过1MB！');
         return false;
       }
 

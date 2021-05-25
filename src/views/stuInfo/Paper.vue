@@ -13,7 +13,7 @@
         <a-form-item label="第X作者">
           <a-input v-decorator="['authorLevel', { rules: [{ required: true, message: '第X作者不能为空' }] }]" />
         </a-form-item>
-        <a-form-item label="会议or期刊">
+        <a-form-item label="类型">
           <a-radio-group v-decorator="['type', { rules: [{ required: true, message: '请选择会议or期刊' }] }]">
             <a-radio value="会议"> 会议 </a-radio>
             <a-radio value="期刊"> 期刊 </a-radio>
@@ -65,7 +65,7 @@ export default {
           dataIndex: 'authorLevel'
         },
         {
-          title: '会议or期刊',
+          title: '类型',
           dataIndex: 'type'
         },
         {

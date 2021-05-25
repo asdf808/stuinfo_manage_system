@@ -39,8 +39,8 @@ export default {
           this.$message.error('请选择图片文件！');
           return;
         }
-        if (file.size > 2 * 1024 * 1024) {
-          this.$message.error('图片大小不得超过2MB！');
+        if (file.size > 1024 * 1024) {
+          this.$message.error('图片大小不得超过1MB！');
           return;
         }
         const reader = new FileReader();

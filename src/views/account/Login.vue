@@ -174,7 +174,7 @@ export default {
       console.log(loginRes);
       this.loading = this.confirmLoading = false;
       if (loginRes.state === true) {
-        const { username, role } = loginRes.user;
+        const { username, role } = loginRes;
         this.setUsername(username);
         this.setRole(role);
         if (this.remember) {

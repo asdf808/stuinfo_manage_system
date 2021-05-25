@@ -1,4 +1,10 @@
-let path = require('path')
+const path = require('path');
+// const UglifyJsPlugin = require('uglifyjs-webpack-plugin') // 去掉注释
+// const CompressionWebpackPlugin = require('compression-webpack-plugin'); // 开启压缩
+// const { HashedModuleIdsPlugin } = require('webpack');
+
+// const isProduction = process.env.NODE_ENV === 'production';
+
 module.exports = {
   devServer: {
     host: '0.0.0.0',
@@ -10,6 +16,10 @@ module.exports = {
       }
     }
   },
+  // lintOnSave: false,
+  // publicPath: './',
+  // assetsDir: 'assets',
+  // productionSourceMap: false,
   pluginOptions: {
     'style-resources-loader': {
       preProcessor: 'less',

@@ -5,7 +5,7 @@
       <span class="name">{{ username }}</span>
     </div>
     <a-menu :class="['avatar-menu']" slot="overlay">
-      <a-menu-item>
+      <a-menu-item @click="toPersonalCenter">
         <a-icon type="user" />
         <span>个人中心</span>
       </a-menu-item>
@@ -24,7 +24,7 @@ import { SERVER_STATIC_BASE_URL } from '@/config';
 export default {
   name: 'HeaderAvatar',
   computed: {
-    ...mapState('account', ['user', 'username']),
+    ...mapState('account', ['user', 'username', 'role']),
     avatarSrc() {
       if (this.user && this.user.avatar) {
         return SERVER_STATIC_BASE_URL + this.user.avatar;
@@ -36,20 +36,14 @@ export default {
   methods: {
     ...mapMutations('account', ['setUser']),
     logout() {
-      // this.$axios
-      //   .post('/login/logout/')
-      //   .then(() => {
-      //     this.$message.success('退出成功');
-      //     this.$router.push('/login');
-      //   })
-      //   .catch(err => {
-      //     this.$message.error(err);
-      //   });
       this.setUser(null);
       localStorage.removeItem('token');
       sessionStorage.removeItem('token');
       this.$message.success('退出成功');
       this.$router.push('/login');
+    },
+    toPersonalCenter(){
+      this.$router.push(`/${this.role}/personal/personalInfo`);
     }
   }
 };

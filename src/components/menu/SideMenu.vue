@@ -1,27 +1,15 @@
 <template>
   <a-layout-sider :class="['side-menu', 'beauty-scroll', 'shadow']" width="256px" :collapsible="collapsible" v-model="collapsed" :trigger="null">
     <div :class="['logo']">
-      <router-link to="/dashboard/workplace">
-        <img src="@/assets/img/logo.png" />
-        <h1>{{ systemName }}</h1>
-      </router-link>
+      <img src="@/assets/img/logo.png" />
+      <h1>{{ systemName }}</h1>
     </div>
     <i-menu theme="dark" :collapsed="collapsed" :options="menuData" @select="onSelect" class="menu" />
-    <!-- <a-menu>
-      <template>
-
-      </template>
-      <a-menu-item v-for="(item, index) in menuData" :key="index">
-        <a-icon type="pie-chart" />
-        <span>{{ item.name }}</span>
-
-      </a-menu-item>
-    </a-menu> -->
   </a-layout-sider>
 </template>
 
 <script>
-import IMenu from './menu';
+import IMenu from './menu2';
 import { systemName } from '@/config';
 // import {mapState} from 'vuex'
 export default {
